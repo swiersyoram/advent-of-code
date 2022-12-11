@@ -1,27 +1,26 @@
-const { readFileSync, promises: fsPromises } = require("fs");
-const input = [];
-const contents = readFileSync("./input.txt", "utf-8");
-const arr = contents.split(/\n/);
+import { highestSum, sort } from "./utils.js";
+import { readFileSync } from "fs";
 
-let temp = [];
-arr.forEach((item, index) => {
-  const value = parseInt(item);
-  if (isNaN(value) || index === arr.length) {
-    input.push(temp);
-    temp = [];
-  } else {
-    temp.push(value);
-  }
-});
-const highestSum = (arr) => {
-  let max = 0;
-  arr.forEach((item) => {
-    const sum = item.reduce((a, b) => a + b, 0);
-    if (sum > max) {
-      max = sum;
-    }
-  });
-  return max;
-};
-const answer = highestSum(input);
+const input = readFileSync("./input.txt", "utf-8").split(/\n/);
+const sorted = sort(input);
+
+const top3 = [];
+for (let index = 0; index < 3; index++) {
+  const max = highestSum(sorted);
+  top3.push(max);
+  sorted.splice(max.index, 1);
+}
+
+const answer = top3.reduce((a, b) => a + b.value, 0);
+
+console.log(top3);
 console.log(answer);
+
+// for (let index = 0; index < array.length; index++) {
+//   const element = array[index];
+// }
+
+// const top3 = [];
+
+// const answer = highestSum(input);
+// console.log(answer);
